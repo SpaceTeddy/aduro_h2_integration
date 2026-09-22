@@ -1,0 +1,99 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Aduro H2 Ofen verbinden",
+        "description": "Seriennummer und Pin-Code des Ofens eingeben (beides auf einem Aufkleber am Ofen). Adresse leer lassen, um den Ofen automatisch im lokalen Netzwerk zu finden.",
+        "data": {
+          "host": "IP-Adresse / Hostname (optional)",
+          "serial": "Seriennummer",
+          "pin": "Pin-Code"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Der Ofen konnte mit der angegebenen Adresse/Seriennummer/Pin nicht erreicht werden. Stelle sicher, dass der Ofen eingeschaltet und im Netzwerk erreichbar ist."
+    },
+    "abort": {
+      "already_configured": "Dieser Ofen ist bereits eingerichtet."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Aduro H2 Optionen",
+        "data": {
+          "scan_interval": "Abfrageintervall (Sekunden)"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "room_temperature": { "name": "Raumtemperatur" },
+      "shaft_temp": { "name": "Schachttemperatur" },
+      "smoke_temp": { "name": "Abgastemperatur" },
+      "power_kw": { "name": "Leistung" },
+      "power_pct": { "name": "Leistung" },
+      "state": { "name": "Status" },
+      "substate": { "name": "Substatus" },
+      "substate_remaining": { "name": "Substatus Restzeit" },
+      "operation_mode": { "name": "Modus" },
+      "last_alarm": { "name": "Letzter Alarm" },
+      "oxygen": { "name": "Restsauerstoff" },
+      "heatlevel_raw": { "name": "Heizstufe (roh)" },
+      "operating_time_stove": { "name": "Betriebszeit Ofen" },
+      "operating_time_auger": { "name": "Betriebszeit Förderschnecke" },
+      "operating_time_ignition": { "name": "Betriebszeit Zündung" },
+      "consumption_today": { "name": "Pelletverbrauch heute" },
+      "consumption_yesterday": { "name": "Pelletverbrauch gestern" },
+      "consumption_month": { "name": "Pelletverbrauch diesen Monat" },
+      "consumption_year": { "name": "Pelletverbrauch dieses Jahr" },
+      "rssi": { "name": "WLAN-Signalstärke" },
+      "stove_ip": { "name": "IP-Adresse des Ofens" },
+      "router_ssid": { "name": "Router-SSID" },
+      "mac_address": { "name": "MAC-Adresse des Ofens" },
+      "stove_serial": { "name": "Seriennummer" },
+      "nbe_type": { "name": "NBE-Typ" },
+      "sw_version": { "name": "SW-Version" },
+      "sw_build": { "name": "SW-Build" },
+      "raw_status": { "name": "Rohstatus" }
+    },
+    "binary_sensor": {
+      "alarm": { "name": "Alarm" }
+    },
+    "switch": {
+      "power": { "name": "Betrieb" },
+      "force_fan": { "name": "Lüfter erzwingen" }
+    },
+    "select": {
+      "heat_level": {
+        "name": "Heizstufe",
+        "state": {
+          "low": "Niedrig",
+          "medium": "Mittel",
+          "high": "Hoch"
+        }
+      },
+      "mode": {
+        "name": "Modus",
+        "state": {
+          "heat_level": "Heizstufe",
+          "temperature": "Temperatur",
+          "wood": "Holz"
+        }
+      }
+    },
+    "number": {
+      "target_temperature": { "name": "Solltemperatur" }
+    },
+    "button": {
+      "start": { "name": "Start" },
+      "stop": { "name": "Stopp" },
+      "force_auger": { "name": "Förderschnecke erzwingen" },
+      "reset_alarm": { "name": "Alarm zurücksetzen" },
+      "fetch_data": { "name": "Daten abrufen" },
+      "resume_after_wood": { "name": "Nach Holzmodus fortsetzen" }
+    }
+  }
+}

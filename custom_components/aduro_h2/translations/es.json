@@ -1,0 +1,99 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Conectar estufa Aduro H2",
+        "description": "Introduce el número de serie y el código PIN de la estufa (ambos impresos en una etiqueta de la estufa). Deja la dirección vacía para detectarla automáticamente en la red local.",
+        "data": {
+          "host": "Dirección IP / nombre de host (opcional)",
+          "serial": "Número de serie",
+          "pin": "Código PIN"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "No se pudo conectar con la estufa usando la dirección/número de serie/PIN indicados. Comprueba que la estufa esté encendida y accesible en la red."
+    },
+    "abort": {
+      "already_configured": "Esta estufa ya está configurada."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Opciones de Aduro H2",
+        "data": {
+          "scan_interval": "Intervalo de consulta (segundos)"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "room_temperature": { "name": "Temperatura ambiente" },
+      "shaft_temp": { "name": "Temperatura del eje" },
+      "smoke_temp": { "name": "Temperatura de humos" },
+      "power_kw": { "name": "Potencia" },
+      "power_pct": { "name": "Potencia" },
+      "state": { "name": "Estado" },
+      "substate": { "name": "Subestado" },
+      "substate_remaining": { "name": "Tiempo restante de subestado" },
+      "operation_mode": { "name": "Modo" },
+      "last_alarm": { "name": "Última alarma" },
+      "oxygen": { "name": "Oxígeno" },
+      "heatlevel_raw": { "name": "Nivel de calor (crudo)" },
+      "operating_time_stove": { "name": "Tiempo de funcionamiento de la estufa" },
+      "operating_time_auger": { "name": "Tiempo de funcionamiento del tornillo sinfín" },
+      "operating_time_ignition": { "name": "Tiempo de funcionamiento de encendido" },
+      "consumption_today": { "name": "Consumo de pellets hoy" },
+      "consumption_yesterday": { "name": "Consumo de pellets ayer" },
+      "consumption_month": { "name": "Consumo de pellets este mes" },
+      "consumption_year": { "name": "Consumo de pellets este año" },
+      "rssi": { "name": "Intensidad de señal WiFi" },
+      "stove_ip": { "name": "Dirección IP de la estufa" },
+      "router_ssid": { "name": "SSID del router" },
+      "mac_address": { "name": "Dirección MAC de la estufa" },
+      "stove_serial": { "name": "Número de serie de la estufa" },
+      "nbe_type": { "name": "Tipo NBE" },
+      "sw_version": { "name": "Versión de software" },
+      "sw_build": { "name": "Build de software" },
+      "raw_status": { "name": "Estado sin procesar" }
+    },
+    "binary_sensor": {
+      "alarm": { "name": "Alarma" }
+    },
+    "switch": {
+      "power": { "name": "Encendido" },
+      "force_fan": { "name": "Forzar ventilador" }
+    },
+    "select": {
+      "heat_level": {
+        "name": "Nivel de calor",
+        "state": {
+          "low": "Bajo",
+          "medium": "Medio",
+          "high": "Alto"
+        }
+      },
+      "mode": {
+        "name": "Modo",
+        "state": {
+          "heat_level": "Nivel de calor",
+          "temperature": "Temperatura",
+          "wood": "Madera"
+        }
+      }
+    },
+    "number": {
+      "target_temperature": { "name": "Temperatura objetivo" }
+    },
+    "button": {
+      "start": { "name": "Iniciar" },
+      "stop": { "name": "Detener" },
+      "force_auger": { "name": "Forzar tornillo sinfín" },
+      "reset_alarm": { "name": "Restablecer alarma" },
+      "fetch_data": { "name": "Actualizar datos" },
+      "resume_after_wood": { "name": "Reanudar tras modo madera" }
+    }
+  }
+}

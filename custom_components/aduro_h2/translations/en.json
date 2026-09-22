@@ -1,0 +1,99 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect Aduro H2 stove",
+        "description": "Enter the stove's serial number and pin code (both printed on a sticker on the stove). Leave the address empty to auto-discover it on the local network.",
+        "data": {
+          "host": "IP address / hostname (optional)",
+          "serial": "Serial number",
+          "pin": "Pin code"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Could not reach the stove with the given address/serial/pin. Make sure the stove is powered on and reachable on the network."
+    },
+    "abort": {
+      "already_configured": "This stove is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Aduro H2 options",
+        "data": {
+          "scan_interval": "Polling interval (seconds)"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "room_temperature": { "name": "Room temperature" },
+      "shaft_temp": { "name": "Shaft temperature" },
+      "smoke_temp": { "name": "Smoke temperature" },
+      "power_kw": { "name": "Power" },
+      "power_pct": { "name": "Power" },
+      "state": { "name": "State" },
+      "substate": { "name": "Substate" },
+      "substate_remaining": { "name": "Substate remaining" },
+      "operation_mode": { "name": "Mode" },
+      "last_alarm": { "name": "Last alarm" },
+      "oxygen": { "name": "Oxygen" },
+      "heatlevel_raw": { "name": "Heat level (raw)" },
+      "operating_time_stove": { "name": "Stove operating time" },
+      "operating_time_auger": { "name": "Auger operating time" },
+      "operating_time_ignition": { "name": "Ignition operating time" },
+      "consumption_today": { "name": "Pellet consumption today" },
+      "consumption_yesterday": { "name": "Pellet consumption yesterday" },
+      "consumption_month": { "name": "Pellet consumption this month" },
+      "consumption_year": { "name": "Pellet consumption this year" },
+      "rssi": { "name": "WiFi signal strength" },
+      "stove_ip": { "name": "Stove IP address" },
+      "router_ssid": { "name": "Router SSID" },
+      "mac_address": { "name": "Stove MAC address" },
+      "stove_serial": { "name": "Stove serial" },
+      "nbe_type": { "name": "NBE type" },
+      "sw_version": { "name": "SW version" },
+      "sw_build": { "name": "SW build" },
+      "raw_status": { "name": "Raw status" }
+    },
+    "binary_sensor": {
+      "alarm": { "name": "Alarm" }
+    },
+    "switch": {
+      "power": { "name": "Power" },
+      "force_fan": { "name": "Force fan" }
+    },
+    "select": {
+      "heat_level": {
+        "name": "Heat level",
+        "state": {
+          "low": "Low",
+          "medium": "Medium",
+          "high": "High"
+        }
+      },
+      "mode": {
+        "name": "Mode",
+        "state": {
+          "heat_level": "Heat level",
+          "temperature": "Temperature",
+          "wood": "Wood"
+        }
+      }
+    },
+    "number": {
+      "target_temperature": { "name": "Target temperature" }
+    },
+    "button": {
+      "start": { "name": "Start" },
+      "stop": { "name": "Stop" },
+      "force_auger": { "name": "Force auger run" },
+      "reset_alarm": { "name": "Reset alarm" },
+      "fetch_data": { "name": "Fetch data" },
+      "resume_after_wood": { "name": "Resume after wood mode" }
+    }
+  }
+}
