@@ -3,10 +3,10 @@
   "name": "Aduro H2 Pellet Stove",
   "codeowners": ["@SpaceTeddy"],
   "config_flow": true,
-  "documentation": "https://github.com/SpaceTeddy/homeassistant_aduro_stove_control_python_scripts",
+  "documentation": "https://github.com/SpaceTeddy/aduro_h2_integration",
   "integration_type": "hub",
   "iot_class": "local_polling",
-  "issue_tracker": "https://github.com/SpaceTeddy/homeassistant_aduro_stove_control_python_scripts/issues",
+  "issue_tracker": "https://github.com/SpaceTeddy/aduro_h2_integration/issues",
   "requirements": ["pyduro==3.2.1"],
-  "version": "0.1.0"
+  "version": "1.0.0"
 }
