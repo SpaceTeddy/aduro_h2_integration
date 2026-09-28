@@ -6,7 +6,11 @@ MANUFACTURER = "Aduro"
 
 CONF_SERIAL = "serial"
 CONF_PIN = "pin"
+# Polling interval while the stove is running. Keeps the original
+# "scan_interval" key so existing option entries carry over unchanged.
 CONF_SCAN_INTERVAL = "scan_interval"
+# Polling interval while the stove is off/stopped.
+CONF_SCAN_INTERVAL_OFF = "scan_interval_off"
 
 # Stores the dict returned by AduroH2Api.discover() (serial/ip/type/version/
 # build/lang) in the config entry, so device info survives restarts without
@@ -14,8 +18,10 @@ CONF_SCAN_INTERVAL = "scan_interval"
 CONF_DISCOVERY = "discovery"
 
 DEFAULT_SCAN_INTERVAL = 60
+DEFAULT_SCAN_INTERVAL_OFF = 300
 MIN_SCAN_INTERVAL = 20
 MAX_SCAN_INTERVAL = 600
+MAX_SCAN_INTERVAL_OFF = 3600
 
 # Fallback address used by the official Aduro/NBE app when the stove is not
 # reachable on the local network (e.g. it lost its DHCP lease).

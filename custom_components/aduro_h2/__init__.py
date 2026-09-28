@@ -12,8 +12,10 @@ from .const import (
     CONF_DISCOVERY,
     CONF_PIN,
     CONF_SCAN_INTERVAL,
+    CONF_SCAN_INTERVAL_OFF,
     CONF_SERIAL,
     DEFAULT_SCAN_INTERVAL,
+    DEFAULT_SCAN_INTERVAL_OFF,
     DOMAIN,
 )
 from .coordinator import AduroH2Coordinator
@@ -36,14 +38,18 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         host=entry.data.get(CONF_HOST),
     )
 
-    update_interval = timedelta(
+    interval_on = timedelta(
         seconds=entry.options.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL)
+    )
+    interval_off = timedelta(
+        seconds=entry.options.get(CONF_SCAN_INTERVAL_OFF, DEFAULT_SCAN_INTERVAL_OFF)
     )
 
     coordinator = AduroH2Coordinator(
         hass,
         api,
-        update_interval,
+        interval_on,
+        interval_off,
         device_info_data=entry.data.get(CONF_DISCOVERY) or {"serial": api.serial},
     )
     await coordinator.async_config_entry_first_refresh()

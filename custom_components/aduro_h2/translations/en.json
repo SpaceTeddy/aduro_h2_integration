@@ -23,7 +23,8 @@
       "init": {
         "title": "Aduro H2 options",
         "data": {
-          "scan_interval": "Polling interval (seconds)"
+          "scan_interval": "Polling interval while stove is on (seconds)",
+          "scan_interval_off": "Polling interval while stove is off (seconds)"
         }
       }
     }

@@ -23,7 +23,8 @@
       "init": {
         "title": "Opciones de Aduro H2",
         "data": {
-          "scan_interval": "Intervalo de consulta (segundos)"
+          "scan_interval": "Intervalo de consulta con la estufa encendida (segundos)",
+          "scan_interval_off": "Intervalo de consulta con la estufa apagada (segundos)"
         }
       }
     }
