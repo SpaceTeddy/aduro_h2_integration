@@ -18,10 +18,8 @@ from .const import (
     FORCE_FAN_KEEPALIVE_SECONDS,
     FORCE_FAN_MAX_DURATION_SECONDS,
     FORCE_FAN_SMOKE_TEMP_CUTOFF,
-    SHUTDOWN_STATES,
-    STARTUP_STATES,
 )
-from .coordinator import AduroH2Coordinator
+from .coordinator import AduroH2Coordinator, stove_is_on
 from .entity import AduroH2Entity
 from .exceptions import to_home_assistant_error
 
@@ -48,7 +46,8 @@ class AduroH2PowerSwitch(AduroH2Entity, SwitchEntity):
     of the SHUTDOWN_STATES (idle, stopped, various fault states) - these
     classifications are reproduced from the independent NewImproved/Aduro
     integration for the same protocol, see const.py. Falls back to
-    `power_pct != 0` for any state code not in either list.
+    `power_pct != 0` for any state code not in either list (see
+    coordinator.stove_is_on).
     """
 
     _attr_translation_key = "power"
@@ -59,19 +58,7 @@ class AduroH2PowerSwitch(AduroH2Entity, SwitchEntity):
 
     @property
     def is_on(self) -> bool | None:
-        state = self.coordinator.data.get("operating", {}).get("state")
-        if state in STARTUP_STATES:
-            return True
-        if state in SHUTDOWN_STATES:
-            return False
-
-        power_pct = self.coordinator.data.get("operating", {}).get("power_pct")
-        if power_pct is None:
-            return None
-        try:
-            return float(power_pct) != 0
-        except ValueError:
-            return None
+        return stove_is_on(self.coordinator.data.get("operating", {}))
 
     async def async_turn_on(self, **kwargs: Any) -> None:
         await self._async_set_start_stop(True)
@@ -86,6 +73,10 @@ class AduroH2PowerSwitch(AduroH2Entity, SwitchEntity):
             )
         except (AduroH2ConnectionError, AduroH2CommandError) as err:
             raise to_home_assistant_error(err) from err
+        # The stove may still report "off" right after a start command; keep
+        # the short interval for a few cycles so we don't wait out the long
+        # off-interval before seeing it come up.
+        self.coordinator.request_fast_polls(3)
         await self.coordinator.async_request_refresh()
 
 
@@ -140,12 +131,18 @@ class AduroH2ForceFanSwitch(AduroH2Entity, SwitchEntity):
             timedelta(seconds=FORCE_FAN_KEEPALIVE_SECONDS),
         )
         self.async_write_ha_state()
+        # The smoke temperature safety check reads coordinator data, so keep
+        # it fresh (short interval) even if the stove itself is off. Refresh
+        # now so a pending long off-interval is replaced right away.
+        self.coordinator.fast_polling = True
+        await self.coordinator.async_request_refresh()
 
     async def async_turn_off(self, **kwargs: Any) -> None:
         await self._async_stop()
 
     async def async_will_remove_from_hass(self) -> None:
         self._cancel_keepalive()
+        self.coordinator.fast_polling = False
         await super().async_will_remove_from_hass()
 
     def _cancel_keepalive(self) -> None:
@@ -155,6 +152,7 @@ class AduroH2ForceFanSwitch(AduroH2Entity, SwitchEntity):
 
     async def _async_stop(self) -> None:
         self._cancel_keepalive()
+        self.coordinator.fast_polling = False
         try:
             await self.hass.async_add_executor_job(self.coordinator.api.stop_force_fan)
         finally:

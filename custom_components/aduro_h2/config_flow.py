@@ -15,10 +15,13 @@ from .const import (
     CONF_DISCOVERY,
     CONF_PIN,
     CONF_SCAN_INTERVAL,
+    CONF_SCAN_INTERVAL_OFF,
     CONF_SERIAL,
     DEFAULT_SCAN_INTERVAL,
+    DEFAULT_SCAN_INTERVAL_OFF,
     DOMAIN,
     MAX_SCAN_INTERVAL,
+    MAX_SCAN_INTERVAL_OFF,
     MIN_SCAN_INTERVAL,
 )
 
@@ -106,7 +109,7 @@ class AduroH2ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
 
 class AduroH2OptionsFlow(config_entries.OptionsFlow):
-    """Lets the user change the polling interval after setup.
+    """Lets the user change the polling intervals (stove on/off) after setup.
 
     `config_entry` is a read-only property inherited from OptionsFlow (it's
     resolved from `self.handler`, which the flow manager sets); assigning it
@@ -128,7 +131,16 @@ class AduroH2OptionsFlow(config_entries.OptionsFlow):
                     ),
                 ): vol.All(
                     vol.Coerce(int), vol.Range(min=MIN_SCAN_INTERVAL, max=MAX_SCAN_INTERVAL)
-                )
+                ),
+                vol.Optional(
+                    CONF_SCAN_INTERVAL_OFF,
+                    default=self.config_entry.options.get(
+                        CONF_SCAN_INTERVAL_OFF, DEFAULT_SCAN_INTERVAL_OFF
+                    ),
+                ): vol.All(
+                    vol.Coerce(int),
+                    vol.Range(min=MIN_SCAN_INTERVAL, max=MAX_SCAN_INTERVAL_OFF),
+                ),
             }
         )
         return self.async_show_form(step_id="init", data_schema=schema)

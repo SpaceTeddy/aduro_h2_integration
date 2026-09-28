@@ -5,9 +5,8 @@ from collections.abc import Callable
 
 from homeassistant.components.button import ButtonEntity, ButtonEntityDescription
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import EntityCategory
 from homeassistant.core import HomeAssistant
-from homeassistant.exceptions import ServiceValidationError
+from homeassistant.exceptions import HomeAssistantError, ServiceValidationError
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .api import AduroH2Api, AduroH2CommandError, AduroH2ConnectionError
@@ -87,17 +86,27 @@ class AduroH2Button(AduroH2Entity, ButtonEntity):
 
 
 class AduroH2FetchDataButton(AduroH2Entity, ButtonEntity):
-    """Forces an immediate poll instead of waiting for the next interval."""
+    """Forces an immediate poll instead of waiting for the next interval.
+
+    Calls async_refresh() directly rather than async_request_refresh(): the
+    latter is debounced (10s cooldown), so a press shortly after another
+    command or a second press would only be queued, not run right away. A
+    failed poll is raised so the press shows an error instead of silently
+    "succeeding".
+    """
 
     _attr_translation_key = "fetch_data"
     _attr_icon = "mdi:download"
-    _attr_entity_category = EntityCategory.DIAGNOSTIC
 
     def __init__(self, coordinator: AduroH2Coordinator) -> None:
         super().__init__(coordinator, "fetch_data")
 
     async def async_press(self) -> None:
-        await self.coordinator.async_request_refresh()
+        await self.coordinator.async_refresh()
+        if not self.coordinator.last_update_success:
+            raise HomeAssistantError(
+                f"Could not fetch data from the stove: {self.coordinator.last_exception}"
+            )
 
 
 class AduroH2ResumeAfterWoodButton(AduroH2Entity, ButtonEntity):

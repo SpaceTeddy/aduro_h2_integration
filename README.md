@@ -39,8 +39,10 @@ not shown, everything else still works.
    is on a different subnet/VLAN than the stove (broadcast discovery won't
    reach it), enter its IP address or hostname directly instead.
 
-The polling interval (default 60s) can be changed afterwards via the
-integration's **Configure** button.
+The stove is polled every 60s while it is running and every 300s while it
+is off. Both intervals can be changed afterwards via the integration's
+**Configure** button. While the Force fan switch is on, and for a few cycles
+after a start command, the shorter interval is used regardless of state.
 
 ## What it creates
 
