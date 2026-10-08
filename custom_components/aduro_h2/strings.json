@@ -24,7 +24,8 @@
         "title": "Aduro H2 options",
         "data": {
           "scan_interval": "Polling interval while stove is on (seconds)",
-          "scan_interval_off": "Polling interval while stove is off (seconds)"
+          "scan_interval_off": "Polling interval while stove is off (seconds)",
+          "active_smoke_temp": "Smoke temperature from which the stove counts as burning (°C)"
         }
       }
     }

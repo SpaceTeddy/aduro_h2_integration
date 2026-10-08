@@ -24,7 +24,8 @@
         "title": "Opciones de Aduro H2",
         "data": {
           "scan_interval": "Intervalo de consulta con la estufa encendida (segundos)",
-          "scan_interval_off": "Intervalo de consulta con la estufa apagada (segundos)"
+          "scan_interval_off": "Intervalo de consulta con la estufa apagada (segundos)",
+          "active_smoke_temp": "Temperatura de humos a partir de la cual la estufa se considera encendida (°C)"
         }
       }
     }

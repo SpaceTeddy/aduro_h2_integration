@@ -102,6 +102,7 @@ class AduroH2FetchDataButton(AduroH2Entity, ButtonEntity):
         super().__init__(coordinator, "fetch_data")
 
     async def async_press(self) -> None:
+        self.coordinator.invalidate_slow_data()
         await self.coordinator.async_refresh()
         if not self.coordinator.last_update_success:
             raise HomeAssistantError(

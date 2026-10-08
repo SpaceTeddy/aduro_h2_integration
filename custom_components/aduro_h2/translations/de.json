@@ -24,7 +24,8 @@
         "title": "Aduro H2 Optionen",
         "data": {
           "scan_interval": "Abfrageintervall bei eingeschaltetem Ofen (Sekunden)",
-          "scan_interval_off": "Abfrageintervall bei ausgeschaltetem Ofen (Sekunden)"
+          "scan_interval_off": "Abfrageintervall bei ausgeschaltetem Ofen (Sekunden)",
+          "active_smoke_temp": "Rauchgastemperatur, ab der der Ofen als brennend gilt (°C)"
         }
       }
     }
