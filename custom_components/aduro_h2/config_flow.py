@@ -12,16 +12,20 @@ from homeassistant.data_entry_flow import FlowResult
 
 from .api import AduroH2Api, AduroH2ConnectionError
 from .const import (
+    CONF_ACTIVE_SMOKE_TEMP,
     CONF_DISCOVERY,
     CONF_PIN,
     CONF_SCAN_INTERVAL,
     CONF_SCAN_INTERVAL_OFF,
     CONF_SERIAL,
+    DEFAULT_ACTIVE_SMOKE_TEMP,
     DEFAULT_SCAN_INTERVAL,
     DEFAULT_SCAN_INTERVAL_OFF,
     DOMAIN,
+    MAX_ACTIVE_SMOKE_TEMP,
     MAX_SCAN_INTERVAL,
     MAX_SCAN_INTERVAL_OFF,
+    MIN_ACTIVE_SMOKE_TEMP,
     MIN_SCAN_INTERVAL,
 )
 
@@ -109,7 +113,8 @@ class AduroH2ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
 
 class AduroH2OptionsFlow(config_entries.OptionsFlow):
-    """Lets the user change the polling intervals (stove on/off) after setup.
+    """Lets the user change the polling intervals (stove on/off) and the
+    smoke temperature above which the stove counts as burning, after setup.
 
     `config_entry` is a read-only property inherited from OptionsFlow (it's
     resolved from `self.handler`, which the flow manager sets); assigning it
@@ -140,6 +145,15 @@ class AduroH2OptionsFlow(config_entries.OptionsFlow):
                 ): vol.All(
                     vol.Coerce(int),
                     vol.Range(min=MIN_SCAN_INTERVAL, max=MAX_SCAN_INTERVAL_OFF),
+                ),
+                vol.Optional(
+                    CONF_ACTIVE_SMOKE_TEMP,
+                    default=self.config_entry.options.get(
+                        CONF_ACTIVE_SMOKE_TEMP, DEFAULT_ACTIVE_SMOKE_TEMP
+                    ),
+                ): vol.All(
+                    vol.Coerce(int),
+                    vol.Range(min=MIN_ACTIVE_SMOKE_TEMP, max=MAX_ACTIVE_SMOKE_TEMP),
                 ),
             }
         )

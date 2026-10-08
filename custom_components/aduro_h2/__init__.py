@@ -9,11 +9,13 @@ from homeassistant.core import HomeAssistant
 
 from .api import AduroH2Api
 from .const import (
+    CONF_ACTIVE_SMOKE_TEMP,
     CONF_DISCOVERY,
     CONF_PIN,
     CONF_SCAN_INTERVAL,
     CONF_SCAN_INTERVAL_OFF,
     CONF_SERIAL,
+    DEFAULT_ACTIVE_SMOKE_TEMP,
     DEFAULT_SCAN_INTERVAL,
     DEFAULT_SCAN_INTERVAL_OFF,
     DOMAIN,
@@ -50,6 +52,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         api,
         interval_on,
         interval_off,
+        entry.options.get(CONF_ACTIVE_SMOKE_TEMP, DEFAULT_ACTIVE_SMOKE_TEMP),
         device_info_data=entry.data.get(CONF_DISCOVERY) or {"serial": api.serial},
     )
     await coordinator.async_config_entry_first_refresh()

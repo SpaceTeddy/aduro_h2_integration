@@ -11,6 +11,9 @@ CONF_PIN = "pin"
 CONF_SCAN_INTERVAL = "scan_interval"
 # Polling interval while the stove is off/stopped.
 CONF_SCAN_INTERVAL_OFF = "scan_interval_off"
+# Smoke temperature (°C) at or above which the stove counts as burning for
+# the poll interval, whatever its state code says (e.g. in wood mode).
+CONF_ACTIVE_SMOKE_TEMP = "active_smoke_temp"
 
 # Stores the dict returned by AduroH2Api.discover() (serial/ip/type/version/
 # build/lang) in the config entry, so device info survives restarts without
@@ -19,9 +22,18 @@ CONF_DISCOVERY = "discovery"
 
 DEFAULT_SCAN_INTERVAL = 60
 DEFAULT_SCAN_INTERVAL_OFF = 300
-MIN_SCAN_INTERVAL = 20
+MIN_SCAN_INTERVAL = 1
 MAX_SCAN_INTERVAL = 600
 MAX_SCAN_INTERVAL_OFF = 3600
+
+DEFAULT_ACTIVE_SMOKE_TEMP = 50
+MIN_ACTIVE_SMOKE_TEMP = 20
+MAX_ACTIVE_SMOKE_TEMP = 300
+
+# Consumption and network data change slowly and cost four of the six
+# requests per poll, so with short poll intervals they're only re-fetched
+# this often; state/temperatures are fetched on every poll.
+SLOW_DATA_REFRESH_SECONDS = 60
 
 # Fallback address used by the official Aduro/NBE app when the stove is not
 # reachable on the local network (e.g. it lost its DHCP lease).
@@ -96,6 +108,10 @@ SUBSTATE_NAMES_BY_STATE: dict[str, str] = {
     "14_0": "By button",
     "14_1": "Wood burning?",
 }
+
+# Wood mode: the state code doesn't change while the wood fire burns down,
+# so whether the stove is burning is judged by smoke temperature alone.
+WOOD_STATES = frozenset({"9"})
 
 STARTUP_STATES = frozenset({"0", "2", "4", "5", "6", "9", "24", "32"})
 SHUTDOWN_STATES = frozenset(

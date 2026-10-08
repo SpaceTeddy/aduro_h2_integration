@@ -39,10 +39,16 @@ not shown, everything else still works.
    is on a different subnet/VLAN than the stove (broadcast discovery won't
    reach it), enter its IP address or hostname directly instead.
 
-The stove is polled every 60s while it is running and every 300s while it
-is off. Both intervals can be changed afterwards via the integration's
-**Configure** button. While the Force fan switch is on, and for a few cycles
-after a start command, the shorter interval is used regardless of state.
+The stove is polled every 60s while it is burning and every 300s while it
+is not. It counts as burning when its smoke temperature is at or above 50°C,
+or otherwise when its state code says it's operating. In wood mode the state
+code doesn't change while the fire burns down, so there only the smoke
+temperature counts. Both intervals (1s minimum) and the temperature
+threshold can be changed afterwards via the integration's **Configure**
+button. While the Force fan switch is on, and for a few cycles after a start
+command, the shorter interval is used regardless of state. Pellet
+consumption and network data are re-fetched at most once a minute, so short
+intervals mainly poll state and temperatures.
 
 ## What it creates
 
