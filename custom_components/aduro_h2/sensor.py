@@ -22,7 +22,15 @@ from homeassistant.const import (
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from .const import DOMAIN, STATE_NAMES, SUBSTATE_NAMES, SUBSTATE_NAMES_BY_STATE
+from .const import (
+    DOMAIN,
+    STATE_KEYS,
+    STATE_NAMES,
+    SUBSTATE_KEYS,
+    SUBSTATE_KEYS_BY_STATE,
+    SUBSTATE_NAMES,
+    SUBSTATE_NAMES_BY_STATE,
+)
 from .coordinator import AduroH2Coordinator
 from .entity import AduroH2Entity
 
@@ -306,7 +314,8 @@ async def async_setup_entry(
     """Set up Aduro H2 sensors from a config entry."""
     coordinator: AduroH2Coordinator = hass.data[DOMAIN][entry.entry_id]
     async_add_entities(
-        AduroH2Sensor(coordinator, description) for description in SENSOR_DESCRIPTIONS
+        [AduroH2Sensor(coordinator, description) for description in SENSOR_DESCRIPTIONS]
+        + [AduroH2StateTextSensor(coordinator), AduroH2SubstateTextSensor(coordinator)]
     )
 
 
@@ -347,3 +356,52 @@ class AduroH2Sensor(AduroH2Entity, SensorEntity):
             return {"description": description}
 
         return None
+
+
+def _enum_options(*key_maps: dict[str, str]) -> list[str]:
+    options: list[str] = []
+    for key_map in key_maps:
+        for key in key_map.values():
+            if key not in options:
+                options.append(key)
+    return [*options, "unknown"]
+
+
+class AduroH2StateTextSensor(AduroH2Entity, SensorEntity):
+    """The stove's state code as localized plain text (enum sensor)."""
+
+    _attr_translation_key = "state_text"
+    _attr_device_class = SensorDeviceClass.ENUM
+    _attr_options = _enum_options(STATE_KEYS)
+    _attr_icon = "mdi:information-outline"
+
+    def __init__(self, coordinator: AduroH2Coordinator) -> None:
+        super().__init__(coordinator, "state_text")
+
+    @property
+    def native_value(self) -> str | None:
+        state = self.coordinator.data.get("operating", {}).get("state")
+        if state is None:
+            return None
+        return STATE_KEYS.get(str(state), "unknown")
+
+
+class AduroH2SubstateTextSensor(AduroH2Entity, SensorEntity):
+    """The stove's substate code as localized plain text (enum sensor)."""
+
+    _attr_translation_key = "substate_text"
+    _attr_device_class = SensorDeviceClass.ENUM
+    _attr_options = _enum_options(SUBSTATE_KEYS, SUBSTATE_KEYS_BY_STATE)
+    _attr_icon = "mdi:information-outline"
+
+    def __init__(self, coordinator: AduroH2Coordinator) -> None:
+        super().__init__(coordinator, "substate_text")
+
+    @property
+    def native_value(self) -> str | None:
+        operating = self.coordinator.data.get("operating", {})
+        substate = operating.get("substate")
+        if substate is None:
+            return None
+        combined = SUBSTATE_KEYS_BY_STATE.get(f"{operating.get('state')}_{substate}")
+        return combined or SUBSTATE_KEYS.get(str(substate), "unknown")
