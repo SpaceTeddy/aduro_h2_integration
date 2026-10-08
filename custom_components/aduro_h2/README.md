@@ -34,7 +34,8 @@ after a start command, the shorter interval is used regardless of state.
 One device per stove, with:
 
 - **Sensors**: room/shaft/smoke temperature, power (kW/%), oxygen, state,
-  substate (both with a human-readable `description` attribute), substate
+  substate (both with a human-readable `description` attribute), state text
+  and substate text (the same codes as localized plain text), substate
   remaining time, mode (raw), last alarm code, heat level (raw),
   stove/auger/ignition operating time, pellet consumption
   (today/yesterday/month/year), WiFi signal strength, stove IP, router SSID,

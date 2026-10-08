@@ -101,3 +101,50 @@ STARTUP_STATES = frozenset({"0", "2", "4", "5", "6", "9", "24", "32"})
 SHUTDOWN_STATES = frozenset(
     {"11", "13", "14", "15", "17", "18", "19", "20", "23", "28", "33", "34", "35"}
 )
+
+# Translation keys for the "State text" / "Substate text" enum sensors, which
+# show the codes above as localized plain text (see translations/*.json).
+# Codes not listed map to "unknown".
+STATE_KEYS: dict[str, str] = {
+    "0": "operating",
+    "2": "operating_startup",
+    "4": "operating_startup",
+    "5": "operating",
+    "6": "stopped",
+    "9": "stopped_wood_burning",
+    "11": "stopped_dropshaft_hot",
+    "13": "stopped_failed_ignition",
+    "14": "off",
+    "15": "stopped_bad_smoke_sensor",
+    "17": "stopped_bad_dropshaft_sensor",
+    "18": "stopped_check_burner_yellow",
+    "19": "stopped_bad_external_auger_output",
+    "20": "stopped_no_fuel",
+    "23": "stopped_by_timer",
+    "24": "operating_air_damper_closed",
+    "28": "stopped_door_open",
+    "32": "operating_power_iii",
+    "33": "stopped_co_sensor_defect",
+    "34": "stopped_check_burn_cup",
+    "35": "stopped_no_fan_power",
+}
+
+SUBSTATE_KEYS: dict[str, str] = {
+    "0": "waiting",
+    "2": "ignition",
+    "4": "ignition_2",
+    "5": "normal",
+    "6": "room_temperature_reached",
+    "9": "wood_burning",
+    "11": "dropshaft_hot",
+    "13": "failed_ignition",
+    "20": "no_fuel",
+    "28": "door_open",
+    "32": "heating_up",
+    "34": "check_burn_cup",
+}
+# Same "<state>_<substate>" disambiguation as SUBSTATE_NAMES_BY_STATE.
+SUBSTATE_KEYS_BY_STATE: dict[str, str] = {
+    "14_0": "by_button",
+    "14_1": "wood_burning_unconfirmed",
+}
