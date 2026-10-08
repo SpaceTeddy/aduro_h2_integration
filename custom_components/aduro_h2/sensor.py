@@ -111,7 +111,6 @@ SENSOR_DESCRIPTIONS: tuple[AduroH2SensorDescription, ...] = (
         translation_key="substate",
         group="operating",
         field="substate",
-        entity_category=EntityCategory.DIAGNOSTIC,
         icon="mdi:state-machine",
     ),
     AduroH2SensorDescription(
